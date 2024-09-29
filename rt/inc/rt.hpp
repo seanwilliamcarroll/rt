@@ -1,11 +1,11 @@
 #pragma once
 
 #include <color.hpp>
-
+#include <constants.hpp>
+#include <interval.hpp>
 #include <ray.hpp>
-
 #include <vec3.hpp>
 
-#include <interval.hpp>
+Camera camera_rt_one_weekend();
 
-#include <constants.hpp>
+HittableList scene_rt_one_weekend();

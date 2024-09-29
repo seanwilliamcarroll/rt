@@ -45,20 +45,21 @@ public:
       , m_pixel00_loc(calc_pixel00_loc())
       , m_samples_per_pixel(std::max<unsigned int>(1, samples_per_pixel))
       , m_pixel_samples_scale(1.0 / m_samples_per_pixel)
-      , m_max_depth(max_depth) {}
+      , m_max_depth(max_depth)
+      , m_thread_pool(std::make_unique<ThreadPool>()) {}
 
   void render(const Hittable &world) {
-    m_thread_pool.start();
+    m_thread_pool->start();
     std::cout << "P3\n" << m_image_width << " " << m_image_height << "\n255\n";
 
     for (unsigned int row = 0; row < m_image_height; ++row) {
       std::clog << "\rScanline: " << row + 1 << " / " << m_image_height
                 << std::flush;
-      m_thread_pool.add_job([this, row, &world] { render_row(row, world); });
+      m_thread_pool->add_job([this, row, &world] { render_row(row, world); });
     }
 
-    m_thread_pool.wait_for_empty_job_queue();
-    m_thread_pool.stop();
+    m_thread_pool->wait_for_empty_job_queue();
+    m_thread_pool->stop();
 
     std::clog << "\rWrite to file       " << std::flush;
     for (const auto &color : m_image_matrix) {
@@ -179,5 +180,5 @@ private:
   const unsigned int m_samples_per_pixel;
   const double m_pixel_samples_scale;
   const unsigned int m_max_depth;
-  ThreadPool m_thread_pool;
+  std::unique_ptr<ThreadPool> m_thread_pool;
 };
