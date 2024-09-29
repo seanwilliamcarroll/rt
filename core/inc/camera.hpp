@@ -68,8 +68,8 @@ public:
   }
 
 private:
-
-  void render_pixel(const unsigned int row, const unsigned int column, const Hittable& world){
+  void render_pixel(const unsigned int row, const unsigned int column,
+                    const Hittable &world) {
     const unsigned int flat_pixel_position = row * m_image_width + column;
     Color pixel_color(0, 0, 0);
     for (unsigned int sample = 0; sample < m_samples_per_pixel; ++sample) {

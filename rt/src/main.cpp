@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <iostream>
 
-
 // We draw the image from top left corner across and then down
 
 int main() {
