@@ -29,16 +29,20 @@ HittableList scene_rt_one_weekend() {
           // Diffuse
           const auto albedo = Color::random() * Color::random();
           sphere_material = std::make_shared<Lambertian>(albedo);
+          const auto center2 = center + Vec3(0, random_double(0, 0.5), 0);
+          world.add(
+              std::make_shared<Sphere>(center, center2, 0.2, sphere_material));
         } else if (choose_material < 0.95) {
           // metal
           const auto albedo = Color::random(0.5, 1.0);
           const auto fuzz = random_double(0.0, 0.5);
           sphere_material = std::make_shared<Metal>(albedo, fuzz);
+          world.add(std::make_shared<Sphere>(center, 0.2, sphere_material));
         } else {
           // glass
           sphere_material = std::make_shared<Dielectric>(1.50);
+          world.add(std::make_shared<Sphere>(center, 0.2, sphere_material));
         }
-        world.add(std::make_shared<Sphere>(center, 0.2, sphere_material));
       }
     }
   }
@@ -59,8 +63,8 @@ Camera camera_rt_one_weekend() {
   // Image
   const double aspect_ratio = 16.0 / 9.0;
   const unsigned int image_width = 400;
-  const unsigned int samples_per_pixel = 10;
-  const unsigned int max_depth = 10;
+  const unsigned int samples_per_pixel = 100;
+  const unsigned int max_depth = 50;
   const Point3 camera_position = Point3(13, 2, 3);
   const Point3 looking_at = Point3(0, 0, 0);
   const Vec3 up_direction = Point3(0, 1, 0);

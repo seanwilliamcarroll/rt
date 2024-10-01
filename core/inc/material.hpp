@@ -28,7 +28,7 @@ public:
       scatter_direction = hit_record.m_normal;
     }
 
-    scattered = Ray(hit_record.m_point, scatter_direction);
+    scattered = Ray(hit_record.m_point, scatter_direction, ray_in.time());
     attenuation = m_albedo;
     return true;
   }
@@ -48,7 +48,7 @@ public:
 
     auto reflected = reflect(ray_in.direction(), hit_record.m_normal);
     reflected = unit_vector(reflected) + (m_fuzz * random_unit_vector());
-    scattered = Ray(hit_record.m_point, reflected);
+    scattered = Ray(hit_record.m_point, reflected, ray_in.time());
     attenuation = m_albedo;
     return (dot(scattered.direction(), hit_record.m_normal) > 0);
   }
@@ -86,7 +86,7 @@ public:
             ? reflect(unit_direction, hit_record.m_normal)
             : refract(unit_direction, hit_record.m_normal, refraction_index);
 
-    scattered = Ray(hit_record.m_point, direction);
+    scattered = Ray(hit_record.m_point, direction, ray_in.time());
     return true;
   }
 

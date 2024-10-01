@@ -96,7 +96,8 @@ private:
         (m_defocus_angle <= 0) ? m_camera_position : defocus_disk_sample();
 
     const auto ray_direction = pixel_sample - ray_origin;
-    return Ray(ray_origin, ray_direction);
+    const auto ray_time = random_double();
+    return Ray(ray_origin, ray_direction, ray_time);
   }
 
   Point3 defocus_disk_sample() const {
