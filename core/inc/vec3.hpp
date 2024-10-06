@@ -60,6 +60,10 @@ public:
     return Vec3(random_double(), random_double(), random_double());
   }
 
+  static Vec3 random_gaussian() {
+    return Vec3(random_gaussian_double(), random_gaussian_double(), random_gaussian_double());
+  }
+
   static Vec3 random(const double min, const double max) {
     return Vec3(random_double(min, max), random_double(min, max),
                 random_double(min, max));
@@ -115,7 +119,7 @@ inline Vec3 random_in_unit_disk() {
   }
 }
 
-inline Vec3 random_unit_vector() {
+inline Vec3 _random_unit_vector() {
   while (true) {
     const auto vec = Vec3::random(-1, 1);
     const auto length_squared = vec.length_squared();
@@ -123,6 +127,20 @@ inline Vec3 random_unit_vector() {
       return vec / std::sqrt(length_squared);
     }
   }
+}
+
+inline Vec3 gauss_random_unit_vector() {
+  while (true) {
+    const auto vec = Vec3::random_gaussian();
+    const auto length_squared = vec.length_squared();
+    if (1e-160 < length_squared) {
+      return vec / std::sqrt(length_squared);
+    }
+  }
+}
+
+inline Vec3 random_unit_vector() {
+  return gauss_random_unit_vector();
 }
 
 inline Vec3 random_on_hemisphere(const Vec3 &normal) {

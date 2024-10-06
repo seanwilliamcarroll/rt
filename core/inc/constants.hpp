@@ -19,6 +19,13 @@ inline double random_double() {
   return distribution(generator);
 }
 
+// Random gaussian sample with mean 0 and stddev 1
+inline double random_gaussian_double() {
+  static std::normal_distribution<double> distribution(0.0, 1.0);
+  static std::mt19937 generator;
+  return distribution(generator);
+}
+
 // Random double in [min, max)
 inline double random_double(const double min, const double max) {
   return min + (max - min) * random_double();
