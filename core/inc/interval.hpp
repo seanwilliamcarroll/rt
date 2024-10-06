@@ -44,6 +44,3 @@ public:
   double m_min;
   double m_max;
 };
-
-const Interval empty = Interval(+infinity, -infinity);
-const Interval universe = Interval(-infinity, +infinity);

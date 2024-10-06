@@ -21,7 +21,13 @@ public:
 
   BoundedVolumeHierarchyNode(std::vector<std::shared_ptr<Hittable>> &objects,
                              const size_t start, const size_t end) {
-    const int axis = random_int(0, 2);
+    m_bounding_box = AxisAlignedBoundingBox::empty;
+    for (size_t index = start; index < end; ++index) {
+      m_bounding_box =
+          AxisAlignedBoundingBox(m_bounding_box, objects[index]->bounding_box());
+    }
+
+    const int axis = m_bounding_box.longest_axis();
 
     const auto comparator = (axis == 0)   ? box_x_compare
                             : (axis == 1) ? box_y_compare
@@ -45,9 +51,6 @@ public:
       m_right =
           std::make_shared<BoundedVolumeHierarchyNode>(objects, midpoint, end);
     }
-
-    m_bounding_box =
-        AxisAlignedBoundingBox(m_left->bounding_box(), m_right->bounding_box());
   }
 
   bool hit(const Ray &ray, Interval ray_t,

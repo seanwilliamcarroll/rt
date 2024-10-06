@@ -70,6 +70,16 @@ public:
     return true;
   }
 
+  size_t longest_axis() const {
+    // Return the index of the longest axis of the bounding box
+
+    if (m_x.size() > m_y.size()) {
+      return m_x.size() > m_z.size() ? 0 : 2;
+    } else {
+      return m_y.size() > m_z.size() ? 1 : 2;
+    }
+  }
+
 private:
   Interval constructInterval(const Point3 &a, const Point3 &b,
                              const size_t index) {
@@ -82,4 +92,8 @@ private:
   Interval m_x;
   Interval m_y;
   Interval m_z;
+
+public:
+  static const AxisAlignedBoundingBox empty;
+  static const AxisAlignedBoundingBox universe;
 };

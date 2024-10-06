@@ -4,7 +4,9 @@ project(core VERSION 0.1.0)
 #*****************************************************************************
 
 add_library(core STATIC
-  src/color.cpp)
+  src/color.cpp
+  src/interval.cpp
+  src/aabb.cpp)
 
 target_include_directories(core PUBLIC inc)
 

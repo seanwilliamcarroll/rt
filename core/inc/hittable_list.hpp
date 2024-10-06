@@ -43,6 +43,7 @@ public:
 
 public:
   std::vector<std::shared_ptr<Hittable>> m_objects;
+
 private:
   AxisAlignedBoundingBox m_bounding_box;
 };
