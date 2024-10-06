@@ -1,3 +1,4 @@
+#include <bvh.hpp>
 #include <camera.hpp>
 #include <hittable.hpp>
 #include <hittable_list.hpp>
@@ -54,6 +55,8 @@ HittableList scene_rt_one_weekend() {
   world.add(std::make_shared<Sphere>(Point3(0, 1, 0), 1.0, material1));
   world.add(std::make_shared<Sphere>(Point3(-4, 1, 0), 1.0, material2));
   world.add(std::make_shared<Sphere>(Point3(4, 1, 0), 1.0, material3));
+
+  world = HittableList(std::make_shared<BoundedVolumeHierarchyNode>(world));
 
   return world;
 }

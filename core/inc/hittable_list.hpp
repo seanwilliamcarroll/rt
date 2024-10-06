@@ -1,5 +1,6 @@
 #pragma once
 
+#include <aabb.hpp>
 #include <hittable.hpp>
 
 #include <memory>
@@ -14,7 +15,11 @@ public:
 
   void clear() { m_objects.clear(); }
 
-  void add(std::shared_ptr<Hittable> object) { m_objects.push_back(object); }
+  void add(std::shared_ptr<Hittable> object) {
+    m_objects.push_back(object);
+    m_bounding_box =
+        AxisAlignedBoundingBox(m_bounding_box, object->bounding_box());
+  }
 
   bool hit(const Ray &ray, Interval ray_t,
            HitRecord &hit_record) const override {
@@ -32,6 +37,12 @@ public:
     return hit_anything;
   }
 
-private:
+  AxisAlignedBoundingBox bounding_box() const override {
+    return m_bounding_box;
+  }
+
+public:
   std::vector<std::shared_ptr<Hittable>> m_objects;
+private:
+  AxisAlignedBoundingBox m_bounding_box;
 };

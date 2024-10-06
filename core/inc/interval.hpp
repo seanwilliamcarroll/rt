@@ -9,9 +9,13 @@ public:
       : m_min(+infinity)
       , m_max(-infinity) {}
 
-  Interval(double min, double max)
+  Interval(const double min, const double max)
       : m_min(min)
       , m_max(max) {}
+
+  Interval(const Interval &a, const Interval &b)
+      : m_min((a.m_min <= b.m_min) ? a.m_min : b.m_min)
+      , m_max((a.m_max >= b.m_max) ? a.m_max : b.m_max) {}
 
   double size() const { return m_max - m_min; }
 
@@ -27,6 +31,11 @@ public:
       return m_max;
     }
     return x;
+  }
+
+  Interval expand(const double delta) {
+    const auto padding = delta / 2;
+    return Interval(m_min - padding, m_max + padding);
   }
 
   static const Interval empty;

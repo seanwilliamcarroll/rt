@@ -1,5 +1,6 @@
 #pragma once
 
+#include <aabb.hpp>
 #include <interval.hpp>
 #include <ray.hpp>
 
@@ -27,4 +28,6 @@ struct Hittable {
 
   virtual bool hit(const Ray &ray, Interval ray_t,
                    HitRecord &hit_record) const = 0;
+
+  virtual AxisAlignedBoundingBox bounding_box() const = 0;
 };

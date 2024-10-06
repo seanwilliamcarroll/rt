@@ -23,3 +23,8 @@ inline double random_double() {
 inline double random_double(const double min, const double max) {
   return min + (max - min) * random_double();
 }
+
+// Random int in [min, max)
+inline int random_int(const int min, const int max) {
+  return int(random_double(min, max + 1));
+}
