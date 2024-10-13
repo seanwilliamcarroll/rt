@@ -61,7 +61,8 @@ public:
   }
 
   static Vec3 random_gaussian() {
-    return Vec3(random_gaussian_double(), random_gaussian_double(), random_gaussian_double());
+    return Vec3(random_gaussian_double(), random_gaussian_double(),
+                random_gaussian_double());
   }
 
   static Vec3 random(const double min, const double max) {
@@ -139,9 +140,7 @@ inline Vec3 gauss_random_unit_vector() {
   }
 }
 
-inline Vec3 random_unit_vector() {
-  return gauss_random_unit_vector();
-}
+inline Vec3 random_unit_vector() { return gauss_random_unit_vector(); }
 
 inline Vec3 random_on_hemisphere(const Vec3 &normal) {
   const Vec3 random_on_unit_sphere = random_unit_vector();

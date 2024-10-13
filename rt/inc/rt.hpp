@@ -6,6 +6,6 @@
 #include <ray.hpp>
 #include <vec3.hpp>
 
-Camera camera_rt_one_weekend();
+void many_balls_scene();
 
-HittableList scene_rt_one_weekend();
+void checkered_spheres();

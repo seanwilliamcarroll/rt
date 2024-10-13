@@ -8,12 +8,9 @@
 
 int main() {
 
-  Camera camera = camera_rt_one_weekend();
+  // many_balls_scene();
 
-  HittableList world = scene_rt_one_weekend();
-
-  // Render
-  camera.render(world);
+  checkered_spheres();
 
   return 0;
 }

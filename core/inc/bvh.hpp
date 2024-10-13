@@ -23,8 +23,8 @@ public:
                              const size_t start, const size_t end) {
     m_bounding_box = AxisAlignedBoundingBox::empty;
     for (size_t index = start; index < end; ++index) {
-      m_bounding_box =
-          AxisAlignedBoundingBox(m_bounding_box, objects[index]->bounding_box());
+      m_bounding_box = AxisAlignedBoundingBox(m_bounding_box,
+                                              objects[index]->bounding_box());
     }
 
     const int axis = m_bounding_box.longest_axis();

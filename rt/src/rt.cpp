@@ -5,6 +5,7 @@
 #include <material.hpp>
 #include <rt.hpp>
 #include <sphere.hpp>
+#include <texture.hpp>
 
 #include <memory>
 
@@ -13,8 +14,10 @@ HittableList scene_rt_one_weekend() {
   HittableList world;
 
   auto ground_material = std::make_shared<Lambertian>(Color(0.5, 0.5, 0.5));
-  world.add(
-      std::make_shared<Sphere>(Point3(0, -1000, 0), 1000, ground_material));
+  auto checker = std::make_shared<CheckerTexture>(0.32, Color(0.2, 0.3, 0.1),
+                                                  Color(0.9, 0.9, 0.9));
+  world.add(std::make_shared<Sphere>(Point3(0, -1000, 0), 1000,
+                                     std::make_shared<Lambertian>(checker)));
 
   for (int a = -11; a < 11; ++a) {
     for (int b = -11; b < 11; ++b) {
@@ -30,9 +33,8 @@ HittableList scene_rt_one_weekend() {
           // Diffuse
           const auto albedo = Color::random() * Color::random();
           sphere_material = std::make_shared<Lambertian>(albedo);
-          const auto center2 = center + Vec3(0, random_double(0, 0.5), 0);
-          world.add(
-              std::make_shared<Sphere>(center, center2, 0.2, sphere_material));
+          // const auto center2 = center + Vec3(0, random_double(0, 0.5), 0);
+          world.add(std::make_shared<Sphere>(center, 0.2, sphere_material));
         } else if (choose_material < 0.95) {
           // metal
           const auto albedo = Color::random(0.5, 1.0);
@@ -61,12 +63,27 @@ HittableList scene_rt_one_weekend() {
   return world;
 }
 
+HittableList scene_checkered_spheres() {
+
+  HittableList world;
+
+  auto checker = std::make_shared<CheckerTexture>(0.32, Color(0.2, 0.3, 0.1),
+                                                  Color(0.9, 0.9, 0.9));
+
+  world.add(std::make_shared<Sphere>(Point3(0, -10, 0), 10,
+                                     std::make_shared<Lambertian>(checker)));
+  world.add(std::make_shared<Sphere>(Point3(0, 10, 0), 10,
+                                     std::make_shared<Lambertian>(checker)));
+
+  return world;
+}
+
 Camera camera_rt_one_weekend() {
 
   // Image
   const double aspect_ratio = 16.0 / 9.0;
-  const unsigned int image_width = 400;
-  const unsigned int samples_per_pixel = 100;
+  const unsigned int image_width = 2000;
+  const unsigned int samples_per_pixel = 500;
   const unsigned int max_depth = 50;
   const Point3 camera_position = Point3(13, 2, 3);
   const Point3 looking_at = Point3(0, 0, 0);
@@ -79,4 +96,44 @@ Camera camera_rt_one_weekend() {
                 vertical_field_of_view, defocus_angle, focus_dist);
 
   return camera;
+}
+
+Camera camera_checkered_spheres() {
+
+  // Image
+  const double aspect_ratio = 16.0 / 9.0;
+  const unsigned int image_width = 400;
+  const unsigned int samples_per_pixel = 100;
+  const unsigned int max_depth = 50;
+  const Point3 camera_position = Point3(13, 2, 3);
+  const Point3 looking_at = Point3(0, 0, 0);
+  const Vec3 up_direction = Point3(0, 1, 0);
+  const double vertical_field_of_view = 20;
+  const double defocus_angle = 0.0;
+  const double focus_dist = 10.0;
+  Camera camera(aspect_ratio, image_width, samples_per_pixel, max_depth,
+                camera_position, looking_at, up_direction,
+                vertical_field_of_view, defocus_angle, focus_dist);
+
+  return camera;
+}
+
+void many_balls_scene() {
+
+  Camera camera = camera_rt_one_weekend();
+
+  HittableList world = scene_rt_one_weekend();
+
+  // Render
+  camera.render(world);
+}
+
+void checkered_spheres() {
+
+  Camera camera = camera_checkered_spheres();
+
+  HittableList world = scene_checkered_spheres();
+
+  // Render
+  camera.render(world);
 }
