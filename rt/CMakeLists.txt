@@ -15,10 +15,4 @@ target_link_libraries(rt-lib core)
 
 target_link_libraries(rt-exe rt-lib)
 
-if (APPLE)
-  set_target_properties(rt-exe PROPERTIES
-    BUILD_RPATH "/opt/local/libexec/llvm-17/lib"
-  )
-endif(APPLE)
-
 #****************************************************************************
