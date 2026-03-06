@@ -63,7 +63,7 @@ public:
   }
 
 private:
-  Vec3 radius_vector() { return Vec3(m_radius, m_radius, m_radius); }
+  Vec3 radius_vector() const { return Vec3(m_radius, m_radius, m_radius); }
 
   AxisAlignedBoundingBox calculate_moving_bounding_box() {
     const AxisAlignedBoundingBox box_1(m_center.at(0) - radius_vector(),
