@@ -19,6 +19,7 @@ public:
                 std::max<unsigned int>(std::thread::hardware_concurrency(), 2) - 1,
                 std::max<unsigned int>(num_threads, 1)))
       , m_should_terminate(false)
+      , m_in_flight(0)
       , m_jobs_added(0)
       , m_jobs_finished(0) {
     std::clog << "Hardware concurrency: " << std::thread::hardware_concurrency()
@@ -50,8 +51,8 @@ public:
   void wait_for_empty_job_queue() {
     {
       std::unique_lock<std::mutex> lock(m_job_queue_mutex);
-      m_job_queue_empty_condition.wait(lock,
-                                       [this] { return m_job_queue.empty(); });
+      m_job_queue_empty_condition.wait(
+          lock, [this] { return m_job_queue.empty() && m_in_flight == 0; });
     }
   }
 
@@ -90,11 +91,16 @@ private:
         }
         job = m_job_queue.front();
         m_job_queue.pop();
-        if (m_job_queue.empty()) {
+        ++m_in_flight;
+      }
+      job();
+      {
+        std::unique_lock<std::mutex> lock(m_job_queue_mutex);
+        --m_in_flight;
+        if (m_job_queue.empty() && m_in_flight == 0) {
           m_job_queue_empty_condition.notify_one();
         }
       }
-      job();
       {
         std::unique_lock<std::mutex> lock(m_jobs_finished_mutex);
         ++m_jobs_finished;
@@ -107,6 +113,7 @@ private:
 private:
   const unsigned int m_num_threads;
   bool m_should_terminate;
+  unsigned int m_in_flight;
   std::mutex m_job_queue_mutex;
   std::condition_variable m_job_queue_mutex_condition;
   std::condition_variable m_job_queue_empty_condition;
