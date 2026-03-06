@@ -15,14 +15,14 @@ inline double degrees_to_radians(const double degrees) {
 // Random double in [0.0, 1.0)
 inline double random_double() {
   static std::uniform_real_distribution<double> distribution(0.0, 1.0);
-  static std::mt19937 generator;
+  thread_local std::mt19937 generator(std::random_device{}());
   return distribution(generator);
 }
 
 // Random gaussian sample with mean 0 and stddev 1
 inline double random_gaussian_double() {
   static std::normal_distribution<double> distribution(0.0, 1.0);
-  static std::mt19937 generator;
+  thread_local std::mt19937 generator(std::random_device{}());
   return distribution(generator);
 }
 

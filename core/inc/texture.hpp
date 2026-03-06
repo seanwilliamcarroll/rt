@@ -21,7 +21,7 @@ public:
   SolidColor(double red, double green, double blue)
       : m_albedo(red, green, blue) {}
 
-  virtual Color value(double u, double v, const Point3 &point) const override {
+  virtual Color value(double, double, const Point3 &) const override {
     return m_albedo;
   }
 
