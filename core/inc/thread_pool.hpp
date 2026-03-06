@@ -15,8 +15,9 @@ public:
 
   ThreadPool(const unsigned int num_threads)
       : m_num_threads(
-            std::min<unsigned int>(std::thread::hardware_concurrency() - 1,
-                                   std::max<unsigned int>(num_threads, 1)))
+            std::min<unsigned int>(
+                std::max<unsigned int>(std::thread::hardware_concurrency(), 2) - 1,
+                std::max<unsigned int>(num_threads, 1)))
       , m_should_terminate(false)
       , m_jobs_added(0)
       , m_jobs_finished(0) {
